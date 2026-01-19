@@ -27,7 +27,3 @@ create table  DishIngredient (
     quantity_required numeric(10, 2),
     unit unit_type
 );
-
-
-alter table dish
-    add column if not exists price numeric(10, 2);
