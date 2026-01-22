@@ -31,11 +31,35 @@ public class DataRetriever {
     }
 
     public List<Ingredient> findIngredients(int page, int size){
-       throw new RuntimeException("Not implemented");
+       DBConnection dbConnection = new DBConnection();
+       List<Ingredient> ingredients = new ArrayList<>();
+
+       String findIngredientsSql = """
+               select ingredient.id , ingredient.name, ingredient.price, ingredient.category from ingredient
+               limit ? offset ?
+               """;
+       int offset = (page - 1) * size;
+       try(Connection connection = dbConnection.getConnection();
+       PreparedStatement preparedStatement = connection.prepareStatement(findIngredientsSql)){
+           preparedStatement.setInt(1,size);
+           preparedStatement.setInt(2,offset);
+           ResultSet resultSet = preparedStatement.executeQuery();
+           while (resultSet.next()) {
+               Ingredient ingredient = new Ingredient();
+               ingredient.setId(resultSet.getInt("id"));
+               ingredient.setName(resultSet.getString("name"));
+               ingredient.setPrice(resultSet.getDouble("price"));
+               ingredient.setCategory(CategoryEnum.valueOf(resultSet.getString("category")));
+               ingredients.add(ingredient);
+           }
+       }catch(SQLException e){
+           throw new RuntimeException(e);
+       }
+       return ingredients;
     }
 
     public List<Dish> findDishsByIngredientName(String IngredientName){
-       throw new RuntimeException("Not implemented");
+
     }
 
     public List<Ingredient> findIngredientsByCriteria(String ingredientName,

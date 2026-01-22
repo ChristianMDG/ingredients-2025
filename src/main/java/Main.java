@@ -12,12 +12,12 @@ public class Main {
         Dish dish1 = dataRetriever.findDishById(2);
         System.out.println(dish1);
 
-//        System.out.println("---Test C ---");
-//        System.out.println(dataRetriever.findIngredients(1, 2));
-//
-//        System.out.println("---Test D ---");
-//        System.out.println(dataRetriever.findIngredients(3, 5));
-//
+        System.out.println("---Test C ---");
+        System.out.println(dataRetriever.findIngredients(1, 2));
+
+        System.out.println("---Test D ---");
+        System.out.println(dataRetriever.findIngredients(3, 5));
+
 //        System.out.println("---Test E ---");
 //        System.out.println(dataRetriever.findDishsByIngredientName("lai"));
 //
