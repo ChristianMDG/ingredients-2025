@@ -9,12 +9,8 @@ public class Dish {
     private List<DishIngredient> ingredients;
 
 
-    public Dish(String name, DishTypeEnum dishType,Double price, List<DishIngredient> ingredients) {
-        this.name = name;
-        this.dishType = dishType;
-        this.price = price;
-        this.ingredients = ingredients;
-    }
+    public Dish(){}
+
     public Dish(int id, String name, DishTypeEnum dishType,Double price, List<DishIngredient> ingredients) {
         this.id = id;
         this.price = price;
@@ -62,6 +58,31 @@ public class Dish {
     public void setIngredients(List<DishIngredient> ingredients) {
         this.ingredients = ingredients;
     }
+
+
+    public Double getDishCost() {
+        double cost = 0.0;
+        if (ingredients == null || ingredients.isEmpty()) {
+            return 0.0;
+        }
+
+       for (DishIngredient ingredient : ingredients) {
+           if (ingredient.getQuantity() != null && ingredient.getIngredient() != null && ingredient.getIngredient().getPrice() != null) {
+               cost += ingredient.getIngredient().getPrice() * ingredient.getQuantity();
+           }
+       }
+
+        return cost;
+    }
+
+
+    public Double getGrossMargin() {
+        if (price == null) {
+            throw new RuntimeException("Dish selling price is null");
+        }
+        return price - getDishCost();
+    }
+
 
     @Override
     public boolean equals(Object o) {

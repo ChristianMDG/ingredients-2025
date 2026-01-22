@@ -7,13 +7,7 @@ public class DishIngredient {
     private Double quantity;
     private Unit unit;
 
-    public DishIngredient(){}
-    public DishIngredient(Dish dish, Ingredient ingredient, Double quantity, Unit unit) {
-        this.dish = dish;
-        this.ingredient = ingredient;
-        this.quantity = quantity;
-        this.unit = unit;
-    }
+    public  DishIngredient() {}
     public DishIngredient(int id, Dish dish, Ingredient ingredient, Double quantity, Unit unit) {
         this.id = id;
         this.dish = dish;

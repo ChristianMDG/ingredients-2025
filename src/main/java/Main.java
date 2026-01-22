@@ -12,22 +12,22 @@ public class Main {
         Dish dish1 = dataRetriever.findDishById(2);
         System.out.println(dish1);
 
-        System.out.println("---Test C ---");
-        System.out.println(dataRetriever.findIngredients(1, 2));
-
-        System.out.println("---Test D ---");
-        System.out.println(dataRetriever.findIngredients(3, 5));
-
-        System.out.println("---Test E ---");
-        System.out.println(dataRetriever.findDishsByIngredientName("lai"));
-
-        System.out.println("---Test F ---");
-        System.out.println(dataRetriever.findIngredientsByCriteria(null, CategoryEnum.VEGETABLE, null, 1, 10));
-
-        System.out.println("---Test G ---");
-        System.out.println(dataRetriever.findIngredientsByCriteria("cho", null, "Sal", 1, 10));
-        System.out.println("---Test H ---");
-        System.out.println(dataRetriever.findIngredientsByCriteria("cho", null, "gâteau", 1, 10));
+//        System.out.println("---Test C ---");
+//        System.out.println(dataRetriever.findIngredients(1, 2));
+//
+//        System.out.println("---Test D ---");
+//        System.out.println(dataRetriever.findIngredients(3, 5));
+//
+//        System.out.println("---Test E ---");
+//        System.out.println(dataRetriever.findDishsByIngredientName("lai"));
+//
+//        System.out.println("---Test F ---");
+//        System.out.println(dataRetriever.findIngredientsByCriteria(null, CategoryEnum.VEGETABLE, null, 1, 10));
+//
+//        System.out.println("---Test G ---");
+//        System.out.println(dataRetriever.findIngredientsByCriteria("cho", null, "Sal", 1, 10));
+//        System.out.println("---Test H ---");
+//        System.out.println(dataRetriever.findIngredientsByCriteria("cho", null, "gâteau", 1, 10));
 
 //        System.out.println("---Test I ---");
 //        List<Ingredient> newIngredients1 = List.of(
@@ -63,6 +63,24 @@ public class Main {
 //        }
 //    }
 
-
+//        Ingredient laitue = new Ingredient(1, "Laitue", 1000.0, CategoryEnum.VEGETABLE);
+//        Ingredient tomate = new Ingredient(2, "Tomate", 600.0, CategoryEnum.VEGETABLE);
+//
+//
+//
+//        DishIngredient di1 = new DishIngredient(laitue,1.0,Unit.KG);
+//        DishIngredient di2 = new DishIngredient(tomate,1.0,Unit.KG);
+//
+//        List<DishIngredient> ingredients = List.of(di1, di2);
+//        Dish salade = new Dish(
+//                "Salade fraîche", DishTypeEnum.STARTER, 2000.0,ingredients
+//
+//        );
+//        System.out.println("---Prrix ---");
+//        System.out.println("Nom du plat : " + salade.getName());
+//        System.out.println("Coût du plat : " + salade.getDishCost() + " Ar");
+//        System.out.println("Marge brute  : " + salade.getGrossMargin() + " Ar");
+//
+//
     }
 }
