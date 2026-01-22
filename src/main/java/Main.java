@@ -18,12 +18,12 @@ public class Main {
         System.out.println("---Test D ---");
         System.out.println(dataRetriever.findIngredients(3, 5));
 
-//        System.out.println("---Test E ---");
-//        System.out.println(dataRetriever.findDishsByIngredientName("lai"));
-//
+        System.out.println("---Test E ---");
+        System.out.println(dataRetriever.findDishsByIngredientName("laitue"));
+
 //        System.out.println("---Test F ---");
 //        System.out.println(dataRetriever.findIngredientsByCriteria(null, CategoryEnum.VEGETABLE, null, 1, 10));
-//
+
 //        System.out.println("---Test G ---");
 //        System.out.println(dataRetriever.findIngredientsByCriteria("cho", null, "Sal", 1, 10));
 //        System.out.println("---Test H ---");

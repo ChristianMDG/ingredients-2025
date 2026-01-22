@@ -59,7 +59,34 @@ public class DataRetriever {
     }
 
     public List<Dish> findDishsByIngredientName(String IngredientName){
+       List<Dish> dishes = new ArrayList<>();
+       DBConnection dbConnection = new DBConnection();
 
+       String findDishsByIngredientNameSql = """
+        SELECT DISTINCT d.id, d.name, d.price, d.dish_type
+        FROM dish d
+        JOIN dishingredient di ON di.id_dish = d.id
+        JOIN ingredient i ON i.id = di.id_ingredient
+        WHERE i.name ILIKE ?
+               """;
+
+       try(Connection connection = dbConnection.getConnection();
+       PreparedStatement preparedStatement = connection.prepareStatement(findDishsByIngredientNameSql)){
+           preparedStatement.setString(1,IngredientName);
+           ResultSet resultSet = preparedStatement.executeQuery();
+           while (resultSet.next()) {
+               Dish dish = new Dish();
+               dish.setId(resultSet.getInt("id"));
+               dish.setName(resultSet.getString("name"));
+               dish.setDishType(DishTypeEnum.valueOf(resultSet.getString("dish_type")));
+               dish.setPrice(resultSet.getDouble("price"));
+               dish.setIngredients(findDishIngredientByDishId(resultSet.getInt("id")));
+               dishes.add(dish);
+           }
+       }catch(SQLException e){
+           throw new RuntimeException(e);
+       }
+       return dishes;
     }
 
     public List<Ingredient> findIngredientsByCriteria(String ingredientName,
