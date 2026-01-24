@@ -156,39 +156,46 @@ public class DataRetriever_backup {
             CategoryEnum category,
             String dishName,
             int page,
-            int size) {
+            int size
+    ) {
 
         List<Ingredient> ingredients = new ArrayList<>();
         int offset = (page - 1) * size;
 
         StringBuilder sql = new StringBuilder("""
-        SELECT DISTINCT i.id, i.name, i.price, i.category
+        SELECT i.id, i.name, i.price, i.category
         FROM ingredient i
-        LEFT JOIN dishingredient di ON di.id_ingredient = i.id
-        LEFT JOIN dish d ON di.id_dish = d.id
-        WHERE 1=1
-    """);
+        """);
 
         List<Object> params = new ArrayList<>();
 
+        // JOIN uniquement si on filtre par plat
+        if (dishName != null && !dishName.isBlank()) {
+            sql.append("""
+            JOIN dishingredient di ON di.id_ingredient = i.id
+            JOIN dish d ON d.id = di.id_dish
+        """);
+        }
 
+        sql.append(" WHERE 1=1 ");
+
+        // Filtre par nom d'ingrédient
         if (ingredientName != null && !ingredientName.isBlank()) {
             sql.append(" AND i.name ILIKE ?");
             params.add("%" + ingredientName + "%");
         }
 
-
+        // Filtre par catégorie
         if (category != null) {
-            sql.append(" AND i.category = ?::ingredient_category");
+            sql.append(" AND i.category = ?");
             params.add(category.name());
         }
 
-
+        // Filtre par nom de plat
         if (dishName != null && !dishName.isBlank()) {
             sql.append(" AND d.name ILIKE ?");
             params.add("%" + dishName + "%");
         }
-
 
         sql.append(" LIMIT ? OFFSET ?");
         params.add(size);
@@ -197,16 +204,8 @@ public class DataRetriever_backup {
         try (Connection con = dbConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql.toString())) {
 
-
             for (int i = 0; i < params.size(); i++) {
-                Object param = params.get(i);
-                if (param instanceof String s) {
-                    ps.setString(i + 1, s);
-                } else if (param instanceof Integer n) {
-                    ps.setInt(i + 1, n);
-                } else {
-                    throw new RuntimeException("Type de paramètre non géré : " + param);
-                }
+                ps.setObject(i + 1, params.get(i));
             }
 
             ResultSet rs = ps.executeQuery();
@@ -220,7 +219,7 @@ public class DataRetriever_backup {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la recherche des ingrédients : " + e.getMessage());
+            throw new RuntimeException("Erreur lors de la recherche des ingrédients", e);
         }
 
         return ingredients;

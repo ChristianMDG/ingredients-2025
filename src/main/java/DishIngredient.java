@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 public class DishIngredient {
-    private int id;
+    private Integer id;
     private Dish dish;
     private Ingredient ingredient;
     private Double quantity;
@@ -16,11 +16,11 @@ public class DishIngredient {
         this.unit = unit;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

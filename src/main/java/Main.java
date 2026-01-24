@@ -5,63 +5,63 @@ public class Main {
     public static void main(String[] args) {
 
         DataRetriever dataRetriever = new DataRetriever();
-        System.out.println("---Test A ---");
-        Dish dish = dataRetriever.findDishById(4);
-        System.out.println(dish);
-        System.out.println("---Test B ---");
-        Dish dish1 = dataRetriever.findDishById(2);
-        System.out.println(dish1);
-
-        System.out.println("---Test C ---");
-        System.out.println(dataRetriever.findIngredients(1, 2));
-
-        System.out.println("---Test D ---");
-        System.out.println(dataRetriever.findIngredients(3, 5));
-
-        System.out.println("---Test E ---");
-        System.out.println(dataRetriever.findDishsByIngredientName("laitue"));
+//        System.out.println("---Test A ---");
+//        Dish dish = dataRetriever.findDishById(4);
+//        System.out.println(dish);
+//        System.out.println("---Test B ---");
+//        Dish dish1 = dataRetriever.findDishById(2);
+//        System.out.println(dish1);
+//
+//        System.out.println("---Test C ---");
+//        System.out.println(dataRetriever.findIngredients(1, 2));
+//
+//        System.out.println("---Test D ---");
+//        System.out.println(dataRetriever.findIngredients(3, 5));
+//
+//        System.out.println("---Test E ---");
+//        System.out.println(dataRetriever.findDishsByIngredientName("laitue"));
 
 //        System.out.println("---Test F ---");
 //        System.out.println(dataRetriever.findIngredientsByCriteria(null, CategoryEnum.VEGETABLE, null, 1, 10));
-
+//
 //        System.out.println("---Test G ---");
 //        System.out.println(dataRetriever.findIngredientsByCriteria("cho", null, "Sal", 1, 10));
 //        System.out.println("---Test H ---");
 //        System.out.println(dataRetriever.findIngredientsByCriteria("cho", null, "gâteau", 1, 10));
 
-//        System.out.println("---Test I ---");
-//        List<Ingredient> newIngredients1 = List.of(
-//                new Ingredient( "Fromage", 1200.0, CategoryEnum.ANIMAL),
-//                new Ingredient( "Oignon", 500.0, CategoryEnum.VEGETABLE)
-//        );
-//
-//        try {
-//            List<Ingredient> created1 = dataRetriever.createIngredients(newIngredients1);
-//            System.out.println("Test 1 réussi : ingrédients créés :");
-//            for (Ingredient ing : created1) {
-//                System.out.println("- " + ing.getName() + " (ID=" + ing.getId() + ")");
-//            }
-//        } catch (RuntimeException e) {
-//            System.out.println("Test 1 échoué : " + e.getMessage());
-//        }
-//
-//
-//        System.out.println("---Test J ---");
-//        List<Ingredient> newIngredients2 = List.of(
-//                new Ingredient( "Carotte", 2000.0, CategoryEnum.VEGETABLE),
-//                new Ingredient( "Laitue", 2000.0, CategoryEnum.VEGETABLE)
-//        );
-//
-//        try {
-//            List<Ingredient> created1 = dataRetriever.createIngredients(newIngredients1);
-//            System.out.println("Test 1 réussi : ingrédients créés :");
-//            for (Ingredient ing : created1) {
-//                System.out.println("- " + ing.getName() + " (ID=" + ing.getId() + ")");
-//            }
-//        } catch (RuntimeException e) {
-//            System.out.println("Test 1 échoué : " + e.getMessage());
-//        }
-//    }
+        System.out.println("---Test I ---");
+        List<Ingredient> newIngredients1 = List.of(
+                new Ingredient( 21,"Farine", 1200.0, CategoryEnum.OTHER),
+                new Ingredient( "Levure", 500.0, CategoryEnum.OTHER)
+        );
+
+        try {
+            List<Ingredient> created1 = dataRetriever.createIngredients(newIngredients1);
+            System.out.println("Test 1 réussi : ingrédients créés :");
+            for (Ingredient ing : created1) {
+                System.out.println("- " + ing.getName() + " (ID=" + ing.getId() + ")");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Test 1 échoué : " + e.getMessage());
+        }
+
+
+        System.out.println("---Test J ---");
+        List<Ingredient> newIngredients2 = List.of(
+                new Ingredient( 23,"Carotte", 2000.0, CategoryEnum.VEGETABLE),
+                new Ingredient( 24,"Laitue", 2000.0, CategoryEnum.VEGETABLE)
+        );
+
+        try {
+            List<Ingredient> created1 = dataRetriever.createIngredients(newIngredients2);
+            System.out.println("Test 1 réussi : ingrédients créés :");
+            for (Ingredient ing : created1) {
+                System.out.println("- " + ing.getName() + " (ID=" + ing.getId() + ")");
+            }
+        } catch (RuntimeException e) {
+            System.out.println("Test 1 échoué : " + e.getMessage());
+        }
+
 
 //        Ingredient laitue = new Ingredient(1, "Laitue", 1000.0, CategoryEnum.VEGETABLE);
 //        Ingredient tomate = new Ingredient(2, "Tomate", 600.0, CategoryEnum.VEGETABLE);

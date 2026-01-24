@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 public class Ingredient {
-    private int id;
+    private Integer id;
     private String name;
     private Double price;
     private CategoryEnum category;
@@ -12,18 +12,18 @@ public class Ingredient {
         this.price = price;
         this.category = category;
     }
-    public Ingredient(int id, String name, Double price, CategoryEnum category) {
+    public Ingredient(Integer id, String name, Double price, CategoryEnum category) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.category = category;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
