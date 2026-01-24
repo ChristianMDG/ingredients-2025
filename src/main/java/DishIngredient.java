@@ -16,6 +16,13 @@ public class DishIngredient {
         this.unit = unit;
     }
 
+    public DishIngredient(int id, Ingredient ingredient, Double quantity, Unit unit) {
+        this.id = id;
+        this.ingredient = ingredient;
+        this.quantity = quantity;
+        this.unit = unit;
+    }
+
     public Integer getId() {
         return id;
     }

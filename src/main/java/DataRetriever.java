@@ -233,9 +233,8 @@ public class DataRetriever {
 
 
     public Dish saveDish(Dish toSave) {
-        throw new RuntimeException("Not implemented");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
 
     private List<DishIngredient> findDishIngredientByDishId(Integer idDish) {
         DBConnection dbConnection = new DBConnection();
@@ -328,5 +327,16 @@ public class DataRetriever {
             ps.executeQuery();
         }
     }
+
+
+    private void attachIngredients(Connection conn, Dish dish, List<DishIngredient> ingredients)
+            throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private void detachIngredients(Connection conn, Dish dish) throws SQLException {
+       throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
 }

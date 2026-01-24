@@ -19,20 +19,12 @@ public class Dish {
         this.ingredients = ingredients;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public String getName() {
@@ -51,6 +43,14 @@ public class Dish {
         this.dishType = dishType;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     public List<DishIngredient> getIngredients() {
         return ingredients;
     }
@@ -58,7 +58,6 @@ public class Dish {
     public void setIngredients(List<DishIngredient> ingredients) {
         this.ingredients = ingredients;
     }
-
 
     public Double getDishCost() {
         double cost = 0.0;
