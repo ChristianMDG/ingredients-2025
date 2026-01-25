@@ -51,6 +51,13 @@ public class Ingredient {
         this.category = category;
     }
 
+    public void prettyPrint() {
+        System.out.println("   - ID        : " + id);
+        System.out.println("   - Catégorie : " + category);
+        System.out.println("   - Prix      : " + price + " Ar");
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
