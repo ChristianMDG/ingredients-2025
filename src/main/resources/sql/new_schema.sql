@@ -27,3 +27,13 @@ create table  DishIngredient (
     quantity_required numeric(10, 2),
     unit unit_type
 );
+
+create type mouvement_type as enum('IN','OUT');
+create table StockMovement(
+    id serial primary key ,
+    id_ingredient int,
+    quantity numeric(10,2),
+    type mouvement_type,
+    unit unit_type,
+    creation_datetime timestamp
+)

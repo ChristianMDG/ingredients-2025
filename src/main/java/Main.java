@@ -134,7 +134,7 @@ public class Main {
         di3.setUnit(Unit.KG);
 
         DishIngredient di4 = new DishIngredient();
-        di4.setIngredient(new Ingredient(7, "Levure", 500.0, CategoryEnum.OTHER));
+        di4.setIngredient(new Ingredient(1, "Laitue", 800.0, CategoryEnum.VEGETABLE));
         di4.setQuantity(1.0);
         di4.setUnit(Unit.KG);
 
