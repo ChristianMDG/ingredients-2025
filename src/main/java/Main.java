@@ -6,13 +6,13 @@ public class Main {
 
         DataRetriever dataRetriever = new DataRetriever();
 
-//        System.out.println("------------- Test A -------------");
-//        Dish dishA = dataRetriever.findDishById(4);
-//        if (dishA != null) {
-//            dishA.prettyPrint();
-//        } else {
-//            System.out.println("⚠️ Plat non trouvé !");
-//        }
+        System.out.println("------------- Test A -------------");
+        Dish dishA = dataRetriever.findDishById(3);
+        if (dishA != null) {
+            dishA.prettyPrint();
+        } else {
+            System.out.println("⚠️ Plat non trouvé !");
+        }
 //
 //        System.out.println("------------- Test B -------------");
 //        Dish dishB = dataRetriever.findDishById(2);
@@ -140,18 +140,21 @@ public class Main {
 
 
         Dish newDish = new Dish();
-        newDish.setName("Gateau au Chocolat");
+        newDish.setId(3);
+        newDish.setName("Riz aux légumes");
         newDish.setDishType(DishTypeEnum.MAIN);
-        newDish.setPrice(15000.0);
+        newDish.setPrice(9000.0);
         newDish.setIngredients(List.of(di1, di2,di3,di4));
 
         Dish savedDish = dataRetriever.saveDish(newDish);
         System.out.println("--- Plat enregistré ---");
         savedDish.prettyPrint();
 
-        System.out.println("Couts :");
-        System.out.println("Le prix du "+ newDish.getName()+ " est ; " + newDish.getPrice()+ "Ar");
-        System.out.println("Depense : " + newDish.getDishCost() +"Ar");
-        System.out.println("Benefice : " + newDish.getGrossMargin() + "Ar");
+        System.out.println("------Couts----- :");
+        Dish dishB = dataRetriever.findDishById(3);
+        System.out.println("Le prix du "+ dishB.getName()+ " est ; " + dishB.getPrice()+ "Ar");
+        System.out.println("Total ingredient par plat (depenses) : " + dishB.getDishCost() +"Ar");
+        System.out.println("Benefice : " + dishB.getGrossMargin() + "Ar");
+
  }
 }
