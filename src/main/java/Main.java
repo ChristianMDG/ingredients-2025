@@ -114,9 +114,9 @@ public class Main {
 //                System.out.println();
 //            }
 //        }
-//
-//        System.out.println("---------------------------------");
-//
+
+        System.out.println("---------------------------------");
+
         System.out.println("------------- Save Plat ------------");
         DishIngredient di1 = new DishIngredient();
         di1.setIngredient(new Ingredient(4, "Chocolat", 3000.0, CategoryEnum.OTHER));
@@ -125,39 +125,33 @@ public class Main {
 
         DishIngredient di2 = new DishIngredient();
         di2.setIngredient(new Ingredient(6, "Farine", 1200.0, CategoryEnum.OTHER));
-        di2.setQuantity(0.2);
+        di2.setQuantity(1.0);
         di2.setUnit(Unit.KG);
 
         DishIngredient di3 = new DishIngredient();
         di3.setIngredient(new Ingredient(5, "Beurre", 2500.0, CategoryEnum.DAIRY));
-        di3.setQuantity(0.2);
+        di3.setQuantity(1.0);
         di3.setUnit(Unit.KG);
 
         DishIngredient di4 = new DishIngredient();
         di4.setIngredient(new Ingredient(7, "Levure", 500.0, CategoryEnum.OTHER));
-        di4.setQuantity(0.2);
+        di4.setQuantity(1.0);
         di4.setUnit(Unit.KG);
-
 
 
         Dish newDish = new Dish();
         newDish.setName("Gateau au Chocolat");
         newDish.setDishType(DishTypeEnum.MAIN);
-        newDish.setPrice(12000.0);
+        newDish.setPrice(15000.0);
         newDish.setIngredients(List.of(di1, di2,di3,di4));
-
 
         Dish savedDish = dataRetriever.saveDish(newDish);
         System.out.println("--- Plat enregistré ---");
         savedDish.prettyPrint();
 
-        List<Dish> dishesWithTomate = dataRetriever.findDishsByIngredientName("Levure");
-        if (dishesWithTomate.isEmpty()) {
-            System.out.println("Aucun plat ne contient 'Tomate'.");
-        } else {
-            for (Dish d : dishesWithTomate) {
-                System.out.println("- " + d.getName());
-            }
-        }
+        System.out.println("Couts :");
+        System.out.println("Le prix du "+ newDish.getName()+ " est ; " + newDish.getPrice()+ "Ar");
+        System.out.println("Depense : " + newDish.getDishCost() +"Ar");
+        System.out.println("Benefice : " + newDish.getGrossMargin() + "Ar");
  }
 }
