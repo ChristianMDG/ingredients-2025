@@ -233,8 +233,73 @@ public class DataRetriever {
 
 
     public Dish saveDish(Dish toSave) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String upsertDishSql = """
+        INSERT INTO dish (id, name, dish_type, price)
+        VALUES (?, ?, ?::dish_type, ?)
+        ON CONFLICT (id) DO UPDATE
+        SET name = EXCLUDED.name,
+            dish_type = EXCLUDED.dish_type,
+            price = EXCLUDED.price
+        RETURNING id
+    """;
+
+        try (Connection conn = new DBConnection().getConnection()) {
+            conn.setAutoCommit(false);
+
+            Integer dishId;
+            try (PreparedStatement ps = conn.prepareStatement(upsertDishSql)) {
+                if (toSave.getId() != null) {
+                    ps.setInt(1, toSave.getId());
+                } else {
+                    ps.setInt(1, getNextSerialValue(conn, "dish", "id"));
+                }
+                ps.setString(2, toSave.getName());
+                ps.setString(3, toSave.getDishType().name());
+                ps.setDouble(4, toSave.getPrice());
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    rs.next();
+                    dishId = rs.getInt(1);
+                }
+            }
+
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "DELETE FROM DishIngredient WHERE id_dish = ?")) {
+                ps.setInt(1, dishId);
+                ps.executeUpdate();
+            }
+
+
+            if (toSave.getIngredients() != null && !toSave.getIngredients().isEmpty()) {
+                String insertDishIngredientSql = """
+                INSERT INTO DishIngredient (id_dish, id_ingredient, quantity_required, unit)
+                VALUES (?, ?, ?, ?::unit_type)
+            """;
+                try (PreparedStatement ps = conn.prepareStatement(insertDishIngredientSql)) {
+                    for (DishIngredient di : toSave.getIngredients()) {
+
+                        if (di.getIngredient() == null || di.getIngredient().getId() == null) {
+                            throw new RuntimeException("Chaque ingrédient doit exister et avoir un ID !");
+                        }
+
+                        ps.setInt(1, dishId);
+                        ps.setInt(2, di.getIngredient().getId());
+                        ps.setDouble(3, di.getQuantity());
+                        ps.setString(4, di.getUnit().name());
+                        ps.addBatch();
+                    }
+                    ps.executeBatch();
+                }
+            }
+
+            conn.commit();
+
+            return findDishById(dishId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 
     private List<DishIngredient> findDishIngredientByDishId(Integer idDish) {
         DBConnection dbConnection = new DBConnection();
