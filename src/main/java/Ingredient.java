@@ -1,3 +1,5 @@
+import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 public class Ingredient {
@@ -5,9 +7,10 @@ public class Ingredient {
     private String name;
     private Double price;
     private CategoryEnum category;
+    private List<StockMovement>  stockMovementList;
 
     public Ingredient() {}
-    public Ingredient(String name, Double price, CategoryEnum category) {
+    public Ingredient(String name, Double price, CategoryEnum category, List<StockMovement> stockMovementList) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -17,6 +20,7 @@ public class Ingredient {
         this.name = name;
         this.price = price;
         this.category = category;
+
     }
 
     public Integer getId() {
@@ -51,12 +55,23 @@ public class Ingredient {
         this.category = category;
     }
 
+    public List<StockMovement> getStockMovementList() {
+        return stockMovementList;
+    }
+
+    public void setStockMovementList(List<StockMovement> stockMovementList) {
+        this.stockMovementList = stockMovementList;
+    }
+
+    public StockValue getStockValueAt(Instant instant){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     public void prettyPrint() {
         System.out.println("   - ID        : " + id);
         System.out.println("   - Catégorie : " + category);
         System.out.println("   - Prix      : " + price + " Ar");
     }
-
 
     @Override
     public boolean equals(Object o) {

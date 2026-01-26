@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -270,6 +271,7 @@ public class DataRetriever {
             }
 
 
+
             if (toSave.getIngredients() != null && !toSave.getIngredients().isEmpty()) {
                 String insertDishIngredientSql = """
                 INSERT INTO DishIngredient (id_dish, id_ingredient, quantity_required, unit)
@@ -299,6 +301,87 @@ public class DataRetriever {
             throw new RuntimeException(e);
         }
     }
+
+    public Ingredient saveIngredient(Ingredient toSave) {
+
+        try (Connection connection = new DBConnection().getConnection()) {
+
+
+            if (toSave.getId() == null) {
+
+                int ingredientId = getNextSerialValue(connection, "ingredient", "id");
+                toSave.setId(ingredientId);
+
+                PreparedStatement ps = connection.prepareStatement(
+                        """
+                        INSERT INTO ingredient (id, name, price, category)
+                        VALUES (?, ?, ?, ?::ingredient_category)
+                        """
+                );
+                ps.setInt(1, toSave.getId());
+                ps.setString(2, toSave.getName());
+                ps.setDouble(3, toSave.getPrice());
+                ps.setString(4, toSave.getCategory().name());
+
+                ps.executeUpdate();
+
+            } else {
+
+                PreparedStatement ps = connection.prepareStatement(
+                        """
+                        UPDATE ingredient
+                        SET name = ?, price = ?, category = ?::ingredient_category
+                        WHERE id = ?
+                        """
+                );
+                ps.setString(1, toSave.getName());
+                ps.setDouble(2, toSave.getPrice());
+                ps.setString(3, toSave.getCategory().name());
+                ps.setInt(4, toSave.getId());
+                ps.executeUpdate();
+            }
+
+            if (toSave.getStockMovementList() != null) {
+
+                for (StockMovement movement : toSave.getStockMovementList()) {
+
+                    if (movement.getId() == null) {
+                        int movementId = getNextSerialValue(connection, "stockmovement", "id");
+                        movement.setId(movementId);
+                    }
+
+                    PreparedStatement ps = connection.prepareStatement(
+                            """
+                            INSERT INTO stockmovement
+                            (id, id_ingredient, quantity, type, unit, creation_datetime)
+                            VALUES (?, ?, ?, ?::mouvement_type, ?::unit_type, ?)
+                            ON CONFLICT (id) DO NOTHING
+                            """
+                    );
+
+                    ps.setInt(1, movement.getId());
+                    ps.setInt(2, toSave.getId());
+                    ps.setDouble(3, movement.getValue().getQuantity());
+                    ps.setString(4, movement.getType().name());
+                    ps.setString(5, movement.getValue().getUnit().name());
+
+                    Instant instant = movement.getCreationDateTime() != null
+                            ? movement.getCreationDateTime()
+                            : Instant.now();
+
+                    ps.setTimestamp(6, Timestamp.from(instant));
+
+                    ps.executeUpdate();
+                }
+            }
+
+            return toSave;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de la sauvegarde de l'ingredient", e);
+        }
+    }
+
 
 
     private List<DishIngredient> findDishIngredientByDishId(Integer idDish) {

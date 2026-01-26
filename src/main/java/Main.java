@@ -1,3 +1,4 @@
+import java.time.Instant;
 import java.util.List;
 
 public class Main {
@@ -6,13 +7,13 @@ public class Main {
 
         DataRetriever dataRetriever = new DataRetriever();
 
-        System.out.println("------------- Test A -------------");
-        Dish dishA = dataRetriever.findDishById(3);
-        if (dishA != null) {
-            dishA.prettyPrint();
-        } else {
-            System.out.println("⚠️ Plat non trouvé !");
-        }
+//        System.out.println("------------- Test A -------------");
+//        Dish dishA = dataRetriever.findDishById(3);
+//        if (dishA != null) {
+//            dishA.prettyPrint();
+//        } else {
+//            System.out.println("⚠️ Plat non trouvé !");
+//        }
 //
 //        System.out.println("------------- Test B -------------");
 //        Dish dishB = dataRetriever.findDishById(2);
@@ -78,9 +79,46 @@ public class Main {
 //        } catch (RuntimeException e) {
 //            System.out.println("Test 1 échoué : " + e.getMessage());
 //        }
+//
+//        System.out.println("------------- Save Plat ------------");
+//        DishIngredient di1 = new DishIngredient();
+//        di1.setIngredient(new Ingredient(4, "Chocolat", 3000.0, CategoryEnum.OTHER));
+//        di1.setQuantity(1.0);
+//        di1.setUnit(Unit.KG);
+//
+//        DishIngredient di2 = new DishIngredient();
+//        di2.setIngredient(new Ingredient(6, "Farine", 1200.0, CategoryEnum.OTHER));
+//        di2.setQuantity(1.0);
+//        di2.setUnit(Unit.KG);
+//
+//        DishIngredient di3 = new DishIngredient();
+//        di3.setIngredient(new Ingredient(5, "Beurre", 2500.0, CategoryEnum.DAIRY));
+//        di3.setQuantity(1.0);
+//        di3.setUnit(Unit.KG);
+//
+//        DishIngredient di4 = new DishIngredient();
+//        di4.setIngredient(new Ingredient(1, "Laitue", 800.0, CategoryEnum.VEGETABLE));
+//        di4.setQuantity(1.0);
+//        di4.setUnit(Unit.KG);
+//
+//        Dish newDish = new Dish();
+//        newDish.setId(3);
+//        newDish.setName("Riz aux légumes");
+//        newDish.setDishType(DishTypeEnum.MAIN);
+//        newDish.setPrice(10000.0);
+//        newDish.setIngredients(List.of(di1, di2,di3,di4));
+//        Dish savedDish = dataRetriever.saveDish(newDish);
+//        System.out.println("----- Plat enregistré ------");
+//        savedDish.prettyPrint();
+//        System.out.println("---------------------------------");
+//
+//        System.out.println("------Couts----- :");
+//        Dish dishE = dataRetriever.findDishById(3);
+//        System.out.println("Le prix du "+ dishE.getName()+ " est ; " + dishE.getPrice()+ "Ar");
+//        System.out.println("Total ingredient par plat (depenses) : " + dishE.getDishCost() +"Ar");
+//        System.out.println("Benefice : " + dishE.getGrossMargin() + "Ar");
+//        System.out.println("---------------------------------");
 //    }
-//
-//
 //    public static void printIngredients(List<Ingredient> ingredients) {
 //        System.out.println("🥬 Ingrédients");
 //        System.out.println("---------------------------------");
@@ -114,47 +152,30 @@ public class Main {
 //                System.out.println();
 //            }
 //        }
+//
+//        System.out.println("---------------------------------");
 
-        System.out.println("---------------------------------");
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(1);
+        ingredient.setName("Huile");
+        ingredient.setPrice(2500.0);
+        ingredient.setCategory(CategoryEnum.OTHER);
 
-        System.out.println("------------- Save Plat ------------");
-        DishIngredient di1 = new DishIngredient();
-        di1.setIngredient(new Ingredient(4, "Chocolat", 3000.0, CategoryEnum.OTHER));
-        di1.setQuantity(1.0);
-        di1.setUnit(Unit.KG);
+        StockValue value = new StockValue();
+        value.setQuantity(1.0);
+        value.setUnit(Unit.KG);
 
-        DishIngredient di2 = new DishIngredient();
-        di2.setIngredient(new Ingredient(6, "Farine", 1200.0, CategoryEnum.OTHER));
-        di2.setQuantity(1.0);
-        di2.setUnit(Unit.KG);
+        StockMovement movement = new StockMovement();
+//        movement.setId(1);
+        movement.setValue(value);
+        movement.setType(MovementTypeEnum.OUT);
+        movement.setCreationDateTime(Instant.now());
 
-        DishIngredient di3 = new DishIngredient();
-        di3.setIngredient(new Ingredient(5, "Beurre", 2500.0, CategoryEnum.DAIRY));
-        di3.setQuantity(1.0);
-        di3.setUnit(Unit.KG);
+        ingredient.setStockMovementList(List.of(movement));
 
-        DishIngredient di4 = new DishIngredient();
-        di4.setIngredient(new Ingredient(1, "Laitue", 800.0, CategoryEnum.VEGETABLE));
-        di4.setQuantity(1.0);
-        di4.setUnit(Unit.KG);
+        Ingredient savedIngredient = dataRetriever.saveIngredient(ingredient);
 
-
-        Dish newDish = new Dish();
-        newDish.setId(3);
-        newDish.setName("Riz aux légumes");
-        newDish.setDishType(DishTypeEnum.MAIN);
-        newDish.setPrice(9000.0);
-        newDish.setIngredients(List.of(di1, di2,di3,di4));
-
-        Dish savedDish = dataRetriever.saveDish(newDish);
-        System.out.println("--- Plat enregistré ---");
-        savedDish.prettyPrint();
-
-        System.out.println("------Couts----- :");
-        Dish dishB = dataRetriever.findDishById(3);
-        System.out.println("Le prix du "+ dishB.getName()+ " est ; " + dishB.getPrice()+ "Ar");
-        System.out.println("Total ingredient par plat (depenses) : " + dishB.getDishCost() +"Ar");
-        System.out.println("Benefice : " + dishB.getGrossMargin() + "Ar");
-
+        System.out.println("Ingredient sauvegardé avec ID : " + savedIngredient.getId());
+        System.out.println("Mouvement sauvegardé avec ID : " + savedIngredient.getStockMovementList().get(0).getId());
  }
 }
