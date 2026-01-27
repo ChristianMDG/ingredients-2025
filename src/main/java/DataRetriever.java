@@ -304,8 +304,6 @@ public class DataRetriever {
     public Ingredient saveIngredient(Ingredient toSave) {
 
         try (Connection connection = new DBConnection().getConnection()) {
-
-
             if (toSave.getId() == null) {
 
                 int ingredientId = getNextSerialValue(connection, "ingredient", "id");
@@ -453,6 +451,7 @@ public class DataRetriever {
     }
 
 
+
     private List<DishIngredient> findDishIngredientByDishId(Integer idDish) {
         DBConnection dbConnection = new DBConnection();
         List<DishIngredient> listIngredient= new ArrayList<>();
@@ -544,7 +543,6 @@ public class DataRetriever {
             ps.executeQuery();
         }
     }
-
 
     private void attachIngredients(Connection conn, Dish dish, List<DishIngredient> ingredients)
             throws SQLException {
