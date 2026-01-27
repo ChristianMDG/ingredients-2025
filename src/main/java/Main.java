@@ -7,14 +7,14 @@ public class Main {
 
         DataRetriever dataRetriever = new DataRetriever();
 
-//        System.out.println("------------- Test A -------------");
-//        Dish dishA = dataRetriever.findDishById(3);
-//        if (dishA != null) {
-//            dishA.prettyPrint();
-//        } else {
-//            System.out.println("⚠️ Plat non trouvé !");
-//        }
-//
+        System.out.println("------------- Test A -------------");
+        Dish dishA = dataRetriever.findDishById(1);
+        if (dishA != null) {
+            dishA.prettyPrint();
+        } else {
+            System.out.println("⚠️ Plat non trouvé !");
+        }
+
 //        System.out.println("------------- Test B -------------");
 //        Dish dishB = dataRetriever.findDishById(2);
 //        if (dishB != null) {
@@ -23,12 +23,12 @@ public class Main {
 //            System.out.println("⚠️ Plat non trouvé !");
 //        }
 //
-//
-//        System.out.println("------------- Test C -------------");
-//        List<Ingredient> ingredientsC = dataRetriever.findIngredients(1, 2);
-//        printIngredients(ingredientsC);
-//
-//
+
+        System.out.println("------------- Test C -------------");
+        List<Ingredient> ingredientsC = dataRetriever.findIngredients(1, 2);
+        printIngredients(ingredientsC);
+
+
 //        System.out.println("------------- Test D -------------");
 //        List<Ingredient> ingredientsD = dataRetriever.findIngredients(3, 5);
 //        printIngredients(ingredientsD);
@@ -119,49 +119,13 @@ public class Main {
 //        System.out.println("Total ingredient par plat (depenses) : " + dishE.getDishCost() +"Ar");
 //        System.out.println("Benefice : " + dishE.getGrossMargin() + "Ar");
 //        System.out.println("---------------------------------");
-//    }
-//    public static void printIngredients(List<Ingredient> ingredients) {
-//        System.out.println("🥬 Ingrédients");
-//        System.out.println("---------------------------------");
-//
-//        if (ingredients == null || ingredients.isEmpty()) {
-//            System.out.println("⚠️ Aucun ingrédient trouvé !");
-//        } else {
-//
-//            for (Ingredient ing : ingredients) {
-//                System.out.println( "️⃣ " + ing.getName());
-//                ing.prettyPrint();
-//                System.out.println();
-//            }
-//        }
-//
-//        System.out.println("---------------------------------");
-//    }
-//
-//
-//    public static void printDishes(List<Dish> dishes) {
-//        System.out.println("🍽️ Plats");
-//        System.out.println("---------------------------------");
-//
-//        if (dishes == null || dishes.isEmpty()) {
-//            System.out.println("⚠️ Aucun plat trouvé !");
-//        } else {
-//
-//            for (Dish dish : dishes) {
-//                System.out.println("️⃣ " + dish.getName());
-//                dish.prettyPrint();
-//                System.out.println();
-//            }
-//        }
-//
-//        System.out.println("---------------------------------");
-
+//        System.out.println("------------- SaveDish ------------");
 //        Ingredient ingredient = new Ingredient();
 //        ingredient.setId(1);
 //        ingredient.setName("Laitue");
 //        ingredient.setPrice(2500.0);
 //        ingredient.setCategory(CategoryEnum.VEGETABLE);
-
+//
 //        StockValue value = new StockValue();
 //        value.setQuantity(5.0);
 //        value.setUnit(Unit.KG);
@@ -178,14 +142,53 @@ public class Main {
 //
 //        System.out.println("Ingredient sauvegardé avec ID : " + savedIngredient.getId());
 //        System.out.println("Mouvement sauvegardé avec ID : " + savedIngredient.getStockMovementList().get(0).getId());
+//
 
-
-        Ingredient ingredient =dataRetriever.findIngredientById(3);
+        System.out.println("------- GetStockValues -------");
+        Ingredient ingredientInStock =dataRetriever.findIngredientById(5);
 
         Instant t = Instant.parse("2024-01-06T12:00:00Z");
-        StockValue stock = ingredient.getStockValueAt(t);
+        StockValue stock = ingredientInStock.getStockValueAt(t);
 
-        System.out.println(stock.getQuantity() + " " + stock.getUnit());
+        System.out.println(ingredientInStock.getName() +" en stock est : "+stock.getQuantity() + " " + stock.getUnit());
+
+   }
+
+
+    public static void printIngredients(List<Ingredient> ingredients) {
+        System.out.println("🥬 Ingrédients");
+        System.out.println("---------------------------------");
+
+        if (ingredients == null || ingredients.isEmpty()) {
+            System.out.println("⚠️ Aucun ingrédient trouvé !");
+        } else {
+
+            for (Ingredient ing : ingredients) {
+                System.out.println( "️⃣ " + ing.getName());
+                ing.prettyPrint();
+                System.out.println();
+            }
+        }
+
+        System.out.println("---------------------------------");
+    }
+
+    public static void printDishes(List<Dish> dishes) {
+        System.out.println("🍽️ Plats");
+        System.out.println("---------------------------------");
+
+        if (dishes == null || dishes.isEmpty()) {
+            System.out.println("⚠️ Aucun plat trouvé !");
+        } else {
+
+            for (Dish dish : dishes) {
+                System.out.println("️⃣ " + dish.getName());
+                dish.prettyPrint();
+                System.out.println();
+            }
+        }
+
+        System.out.println("---------------------------------");
 
     }
 }

@@ -383,9 +383,11 @@ public class DataRetriever {
 
     public Ingredient findIngredientById(Integer ingredientId) {
         DBConnection dbConnection = new DBConnection();
+
         Ingredient ingredient = null;
 
         try (Connection connection = dbConnection.getConnection()) {
+
 
             String ingredientSql = """
             SELECT id, name, price, category
@@ -408,7 +410,7 @@ public class DataRetriever {
             }
 
             if (ingredient == null) {
-                return null;
+               throw new RuntimeException("L'ingredient n'existe pas encore dans la base");
             }
 
             String movementSql = """
