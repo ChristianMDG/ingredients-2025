@@ -154,11 +154,7 @@ public class DataRetrieverTest {
         }
     }
 
-    // =======================
-    // TESTS COMMENTÉS (CONSERVÉS À L’IDENTIQUE)
-    // =======================
 
-    /*
     @Test
     void saveDish_test() {
         DishIngredient di1 = new DishIngredient();
@@ -192,13 +188,13 @@ public class DataRetrieverTest {
         Dish savedDish = dataRetriever.saveDish(newDish);
         savedDish.prettyPrint();
     }
-    */
+
 
     @Test
     void testGetStockValueAt() {
         System.out.println("------- GetStockValues -------");
 
-        Ingredient ingredientInStock = dataRetriever.findIngredientById(5);
+        Ingredient ingredientInStock = dataRetriever.findIngredientById(1);
         assertNotNull(ingredientInStock);
 
         Instant t = Instant.parse("2024-01-06T12:00:00Z");
@@ -216,9 +212,6 @@ public class DataRetrieverTest {
         );
     }
 
-    // =======================
-    // MÉTHODES UTILITAIRES
-    // =======================
 
     private void printIngredients(List<Ingredient> ingredients) {
         System.out.println("🥬 Ingrédients");
