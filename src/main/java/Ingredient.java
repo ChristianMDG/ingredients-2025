@@ -1,3 +1,5 @@
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -63,9 +65,34 @@ public class Ingredient {
         this.stockMovementList = stockMovementList;
     }
 
-    public StockValue getStockValueAt(Instant instant){
-        throw new UnsupportedOperationException("Not supported yet.");
+    public StockValue getStockValueAt(Instant t) {
+
+        double stock = 0.0;
+
+        if (stockMovementList != null) {
+            for (StockMovement movement : stockMovementList) {
+
+                if (movement.getCreationDateTime() != null
+                        && movement.getValue() != null
+                        && movement.getValue().getQuantity() != null
+                        && !movement.getCreationDateTime().isAfter(t)) {
+
+                    double quantity = movement.getValue().getQuantity();
+
+                    if (movement.getType() == MovementTypeEnum.OUT) {
+                        quantity = -quantity;
+                    }
+
+                    stock += quantity;
+                }
+            }
+        }
+
+        return new StockValue(stock, Unit.KG);
     }
+
+
+
 
     public void prettyPrint() {
         System.out.println("   - ID        : " + id);

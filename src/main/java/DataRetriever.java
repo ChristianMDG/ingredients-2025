@@ -271,7 +271,6 @@ public class DataRetriever {
             }
 
 
-
             if (toSave.getIngredients() != null && !toSave.getIngredients().isEmpty()) {
                 String insertDishIngredientSql = """
                 INSERT INTO DishIngredient (id_dish, id_ingredient, quantity_required, unit)
@@ -382,6 +381,74 @@ public class DataRetriever {
         }
     }
 
+    public Ingredient findIngredientById(Integer ingredientId) {
+        DBConnection dbConnection = new DBConnection();
+        Ingredient ingredient = null;
+
+        try (Connection connection = dbConnection.getConnection()) {
+
+            String ingredientSql = """
+            SELECT id, name, price, category
+            FROM ingredient
+            WHERE id = ?
+        """;
+
+            try (PreparedStatement ps = connection.prepareStatement(ingredientSql)) {
+                ps.setInt(1, ingredientId);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    ingredient = new Ingredient(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getDouble("price"),
+                            CategoryEnum.valueOf(rs.getString("category"))
+                    );
+                }
+            }
+
+            if (ingredient == null) {
+                return null;
+            }
+
+            String movementSql = """
+            SELECT id, quantity, unit, type, creation_datetime
+            FROM stockmovement
+            WHERE id_ingredient = ?
+        """;
+
+            List<StockMovement> movements = new ArrayList<>();
+
+            try (PreparedStatement ps = connection.prepareStatement(movementSql)) {
+                ps.setInt(1, ingredientId);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+
+                    StockValue value = new StockValue(
+                            rs.getDouble("quantity"),
+                            Unit.valueOf(rs.getString("unit"))
+                    );
+
+                    StockMovement movement = new StockMovement(
+                            rs.getInt("id"),
+                            value,
+                            MovementTypeEnum.valueOf(rs.getString("type")),
+                            rs.getTimestamp("creation_datetime").toInstant()
+                    );
+
+                    movements.add(movement);
+                }
+            }
+
+            ingredient.setStockMovementList(movements);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return ingredient;
+    }
 
 
     private List<DishIngredient> findDishIngredientByDishId(Integer idDish) {

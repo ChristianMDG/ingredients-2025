@@ -51,11 +51,11 @@ public class Main {
 //        System.out.println("------------- Test H -------------");
 //        List<Ingredient> ingredientsH = dataRetriever.findIngredientsByCriteria("cho", null, "gâteau", 1, 10);
 //        printIngredients(ingredientsH);
-//
+
 //        System.out.println("---Test I ---");
 //        List<Ingredient> newIngredients1 = List.of(
-//                new Ingredient( 6,"Farine", 1200.0, CategoryEnum.OTHER),
-//                new Ingredient( 7,"Levure", 500.0, CategoryEnum.OTHER));
+//                new Ingredient( 1,"Laitue", 1200.0, CategoryEnum.VEGETABLE));
+//
 //        try {
 //            List<Ingredient> created1 = dataRetriever.createIngredients(newIngredients1);
 //            System.out.println("Test 1 réussi : ingrédients créés :");
@@ -82,12 +82,13 @@ public class Main {
 //
 //        System.out.println("------------- Save Plat ------------");
 //        DishIngredient di1 = new DishIngredient();
-//        di1.setIngredient(new Ingredient(4, "Chocolat", 3000.0, CategoryEnum.OTHER));
+//        di1.setIngredient(new Ingredient(1, "gisa", 3000.0, CategoryEnum.OTHER));
 //        di1.setQuantity(1.0);
 //        di1.setUnit(Unit.KG);
 //
 //        DishIngredient di2 = new DishIngredient();
-//        di2.setIngredient(new Ingredient(6, "Farine", 1200.0, CategoryEnum.OTHER));
+//        di2.setId(2);
+//        di2.setIngredient(new Ingredient(5, "Farine", 1200.0, CategoryEnum.OTHER));
 //        di2.setQuantity(1.0);
 //        di2.setUnit(Unit.KG);
 //
@@ -111,7 +112,7 @@ public class Main {
 //        System.out.println("----- Plat enregistré ------");
 //        savedDish.prettyPrint();
 //        System.out.println("---------------------------------");
-//
+
 //        System.out.println("------Couts----- :");
 //        Dish dishE = dataRetriever.findDishById(3);
 //        System.out.println("Le prix du "+ dishE.getName()+ " est ; " + dishE.getPrice()+ "Ar");
@@ -155,27 +156,36 @@ public class Main {
 //
 //        System.out.println("---------------------------------");
 
-        Ingredient ingredient = new Ingredient();
-        ingredient.setId(1);
-        ingredient.setName("Huile");
-        ingredient.setPrice(2500.0);
-        ingredient.setCategory(CategoryEnum.OTHER);
+//        Ingredient ingredient = new Ingredient();
+//        ingredient.setId(1);
+//        ingredient.setName("Laitue");
+//        ingredient.setPrice(2500.0);
+//        ingredient.setCategory(CategoryEnum.VEGETABLE);
 
-        StockValue value = new StockValue();
-        value.setQuantity(1.0);
-        value.setUnit(Unit.KG);
-
-        StockMovement movement = new StockMovement();
+//        StockValue value = new StockValue();
+//        value.setQuantity(5.0);
+//        value.setUnit(Unit.KG);
+//
+//        StockMovement movement = new StockMovement();
 //        movement.setId(1);
-        movement.setValue(value);
-        movement.setType(MovementTypeEnum.OUT);
-        movement.setCreationDateTime(Instant.now());
+//        movement.setValue(value);
+//        movement.setType(MovementTypeEnum.OUT);
+//        movement.setCreationDateTime(Instant.now());
+//
+//        ingredient.setStockMovementList(List.of(movement));
+//
+//        Ingredient savedIngredient = dataRetriever.saveIngredient(ingredient);
+//
+//        System.out.println("Ingredient sauvegardé avec ID : " + savedIngredient.getId());
+//        System.out.println("Mouvement sauvegardé avec ID : " + savedIngredient.getStockMovementList().get(0).getId());
 
-        ingredient.setStockMovementList(List.of(movement));
 
-        Ingredient savedIngredient = dataRetriever.saveIngredient(ingredient);
+        Ingredient ingredient =dataRetriever.findIngredientById(3);
 
-        System.out.println("Ingredient sauvegardé avec ID : " + savedIngredient.getId());
-        System.out.println("Mouvement sauvegardé avec ID : " + savedIngredient.getStockMovementList().get(0).getId());
- }
+        Instant t = Instant.parse("2024-01-06T12:00:00Z");
+        StockValue stock = ingredient.getStockValueAt(t);
+
+        System.out.println(stock.getQuantity() + " " + stock.getUnit());
+
+    }
 }
