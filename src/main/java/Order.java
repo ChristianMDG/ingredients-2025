@@ -7,13 +7,16 @@ public class Order {
     private String reference;
     private Instant creationDateTime;
     private List<DishOrder> dishOrders;
-
+    private OrderTypeEnum type;
+    private OrderStatusEnum status;
     public Order(){}
-    public Order(Integer id, String reference, Instant creationDateTime, List<DishOrder> dishOrders) {
+    public Order(Integer id, String reference, Instant creationDateTime, List<DishOrder> dishOrders,OrderTypeEnum type, OrderStatusEnum status) {
         this.id = id;
         this.reference = reference;
         this.creationDateTime = creationDateTime;
         this.dishOrders = dishOrders;
+        this.type = type;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -48,17 +51,34 @@ public class Order {
         this.dishOrders = dishOrders;
     }
 
+    public OrderTypeEnum getType() {
+        return type;
+    }
+
+    public void setType(OrderTypeEnum type) {
+        this.type = type;
+    }
+
+    public OrderStatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatusEnum status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id) && Objects.equals(reference, order.reference) && Objects.equals(creationDateTime, order.creationDateTime) && Objects.equals(dishOrders, order.dishOrders);
+        return Objects.equals(id, order.id) && Objects.equals(reference, order.reference) && Objects.equals(creationDateTime, order.creationDateTime) && Objects.equals(dishOrders, order.dishOrders) && type == order.type && status == order.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, reference, creationDateTime, dishOrders);
+        return Objects.hash(id, reference, creationDateTime, dishOrders, type, status);
     }
+
 
     @Override
     public String toString() {
@@ -67,6 +87,8 @@ public class Order {
                 ", reference='" + reference + '\'' +
                 ", creationDateTime=" + creationDateTime +
                 ", dishOrders=" + dishOrders +
+                ", type=" + type +
+                ", status=" + status +
                 '}';
     }
 
@@ -86,20 +108,10 @@ public class Order {
             System.out.println("Type       : " + dish.getDishType());
             System.out.println("Prix       : " + dish.getPrice());
             System.out.println("Quantité   : " + dishOrder.getQuantity());
+            System.out.println("Ingredient : " + dishOrder.getDish().getIngredients());
 
-            if (dish.getIngredients() != null && !dish.getIngredients().isEmpty()) {
-                System.out.println("Ingrédients :");
-                for (DishIngredient di : dish.getIngredients()) {
-                    Ingredient ing = di.getIngredient();
-                    System.out.println("  - " + ing.getName() + " (" + ing.getCategory() + ") : "
-                            + di.getQuantity() + " " + di.getUnit());
-                }
-            } else {
-                System.out.println("Ingrédients : Aucun");
-            }
-            System.out.println("-------------------------------------------------");
-        }
-        System.out.println("=================================");
-    }
 
+            System.out.println("=================================");
+
+        }}
 }

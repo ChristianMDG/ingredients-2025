@@ -101,7 +101,6 @@ public class Dish {
         Dish dish = (Dish) o;
         return Objects.equals(id, dish.id);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id);
