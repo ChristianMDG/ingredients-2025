@@ -1,3 +1,4 @@
+import java.security.PublicKey;
 import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -689,7 +690,6 @@ public class DataRetriever {
 
             Integer orderId;
 
-
             if (orderToSave.getId() != null) {
                 String checkStatusSql = "SELECT status FROM \"Order\" WHERE id = ?";
                 try (PreparedStatement psCheck = conn.prepareStatement(checkStatusSql)) {
@@ -963,4 +963,55 @@ public class DataRetriever {
     }
 
 
+    // push-down processing
+
+    public StockValue getStockValueAt(Instant t, Integer ingredientIdentifier) {
+
+        DBConnection dbConnection = new DBConnection();
+        StockValue stockValue = new StockValue();
+        String getStockValueSql = """
+              select unit , sum(
+              case
+                  when stockmovement.type = 'OUT' then stockmovement.quantity * -1
+                            else stockmovement.quantity
+                            end
+                            ) as actual_quantity from stockmovement
+              where creation_datetime <= ?
+              and stockmovement.id_ingredient = ?
+              group by unit
+            """;
+
+        try (Connection connection = dbConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(getStockValueSql)) {
+            preparedStatement.setTimestamp(1, Timestamp.from(t));
+            preparedStatement.setInt(2, ingredientIdentifier);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                stockValue.setUnit(Unit.valueOf(resultSet.getString("unit")));
+                stockValue.setQuantity(resultSet.getDouble("actual_quantity"));
+            }
+            return stockValue;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    public Double getDishCost(Integer dishId){
+
+       DBConnection dbConnection = new DBConnection();
+       String getDishCostSql = """
+               select dish.is, dish.name,sum(ingredient.price * dishingredient.quantity_required) as Cost from dish
+                       join dishingredient on dish.id = dishingredient.id_dish
+                       join ingredient on dishingredient.id_ingredient = ingredient.id
+                       where id_dish = 1;
+       """
+    }
+
+
+    public Double getGrossMargint(Integer dishId){
+       throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
+

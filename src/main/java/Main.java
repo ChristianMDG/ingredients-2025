@@ -1,12 +1,20 @@
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Main {
 
     public static void main(String[] args) {
 
         DataRetriever dataRetriever = new DataRetriever();
+
+        Instant t = Instant.parse("2024-01-06T12:00:00Z");
+
+        System.out.println(dataRetriever.getStockValueAt(t,2));
 
 //        System.out.println("------------- Test A -------------");
 //        Dish dishA = dataRetriever.findDishById(1);
@@ -15,7 +23,8 @@ public class Main {
 //        } else {
 //            System.out.println("⚠️ Plat non trouvé !");
 //        }
-//
+
+
 //        System.out.println("------------- Test B -------------");
 //        Dish dishB = dataRetriever.findDishById(2);
 //        if (dishB != null) {
@@ -115,11 +124,11 @@ public class Main {
 //        savedDish.prettyPrint();
 //        System.out.println("---------------------------------");
 //
-//        System.out.println("------Couts----- :");
-//        Dish dishE = dataRetriever.findDishById(2);
-//        System.out.println("Le prix du " + dishE.getName() + " est ; " + dishE.getPrice() + "Ar");
-//        System.out.println("Total ingredient par plat (depenses) : " + dishE.getDishCost() + "Ar");
-//        System.out.println("Benefice : " + dishE.getGrossMargin() + "Ar");
+        System.out.println("------Couts----- :");
+        Dish dishE = dataRetriever.findDishById(1);
+        System.out.println("Le prix du " + dishE.getName() + " est ; " + dishE.getPrice() + "Ar");
+        System.out.println("Total ingredient par plat (depenses) : " + dishE.getDishCost() + "Ar");
+        System.out.println("Benefice : " + dishE.getGrossMargin() + "Ar");
 //
 //        System.out.println("---------------------------------");
 //
@@ -147,16 +156,16 @@ public class Main {
 //        System.out.println("Ingredient sauvegardé avec ID : " + savedIngredient.getId());
 //        System.out.println("Mouvement sauvegardé avec ID : " + savedIngredient.getStockMovementList().get(0).getId());
 //
-//
-//        System.out.println("------- GetStockValues -------");
-//        Ingredient ingredientInStock = dataRetriever.findIngredientById(5);
-//
-//        Instant t = Instant.parse("2024-01-06T12:00:00Z");
-//        StockValue stock = ingredientInStock.getStockValueAt(t);
-//
-//        System.out.println(ingredientInStock.getName() + " en stock est : " + stock.getQuantity() + " " + stock.getUnit());
-//
-//
+
+        System.out.println("------- GetStockValues -------");
+        Ingredient ingredientInStock = dataRetriever.findIngredientById(2);
+
+        Instant t1 = Instant.parse("2024-01-06T12:00:00Z");
+        StockValue stock = ingredientInStock.getStockValueAt(t1);
+
+        System.out.println(ingredientInStock.getName() + " en stock est : " + stock.getQuantity() + " " + stock.getUnit());
+
+
 //        Dish dish1 = dataRetriever.findDishById(2);
 //        Dish dish2 = dataRetriever.findDishById(4);
 //
@@ -196,14 +205,14 @@ public class Main {
 
 
 
-
-        System.out.println("------------- TEST ORDERS -------------");
-
-       Order order = new Order();
-        order = dataRetriever.findOrderByReference("ORD102");
-        order.setStatus(OrderStatusEnum.DELIVERED);
-        System.out.println(dataRetriever.saveOrder(order));
-    }
+//
+//        System.out.println("------------- TEST ORDERS -------------");
+//
+//       Order order = new Order();
+//        order = dataRetriever.findOrderByReference("ORD102");
+//        order.setStatus(OrderStatusEnum.DELIVERED);
+//        System.out.println(dataRetriever.saveOrder(order));
+        }
 
 
 //    public static void printIngredients(List<Ingredient> ingredients) {
