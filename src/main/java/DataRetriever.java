@@ -1,5 +1,7 @@
 import java.sql.*;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1045,5 +1047,93 @@ public class DataRetriever {
         throw new RuntimeException(e);
         }
     }
-}
+
+//    public List<StockMovement> getIngredientStockStats(String period, Instant intervalMin, Instant intervalMax){
+//      DBConnection dbConnection = new DBConnection();
+//      List<StockMovement> stockMovements = new ArrayList<>();
+//
+//      String stockStackSql = """
+//         SELECT
+//                     ingredient.name as name,
+//                     DATE_TRUNC(?, stockmovement.creation_datetime) AS period,
+//                     SUM(CASE
+//                             WHEN stockmovement.type = 'OUT' THEN stockmovement.quantity * -1
+//                             ELSE stockmovement.quantity
+//                         END) AS stock_quantity, stockmovement.unit
+//                 FROM stockmovement
+//                          JOIN ingredient
+//                         ON stockmovement.id_ingredient = ingredient.id
+//                 where stockmovement.creation_datetime BETWEEN ? AND ?
+//                 GROUP BY ingredient.name, period ,stockmovement.unit
+//                 ORDER BY period;
+//      """;
+//
+//      try (Connection connection = dbConnection.getConnection();
+//      PreparedStatement preparedStatement = connection.prepareStatement(stockStackSql)){
+//          preparedStatement.setString(1,period.toLowerCase());
+//          preparedStatement.setTimestamp(2,Timestamp.from(intervalMin));
+//          preparedStatement.setTimestamp(3,Timestamp.from(intervalMax));
+//          ResultSet resultSet = preparedStatement.executeQuery();
+//          while (resultSet.next()) {
+//             stockMovements.add(new StockMovement(
+//                     resultSet.getString("name"),
+//             ))
+//          }
+//
+//          return stockMovements;
+//      }catch (SQLException e) {
+//          throw new RuntimeException(e);
+//      }
+//    }
+
+        public void displayStockResults(String period, Instant startDate, Instant endDate) {
+
+            DBConnection dbConnection = new DBConnection();
+
+            String sql = """
+            SELECT
+                ingredient.name as name,
+                DATE_TRUNC(?, stockmovement.creation_datetime) AS period,
+                SUM(CASE
+                        WHEN stockmovement.type = 'OUT' THEN stockmovement.quantity * -1
+                        ELSE stockmovement.quantity
+                    END) AS stock_quantity,
+                stockmovement.unit
+            FROM stockmovement
+            JOIN ingredient ON stockmovement.id_ingredient = ingredient.id
+            WHERE stockmovement.creation_datetime BETWEEN ? AND ?
+            GROUP BY ingredient.name, period, stockmovement.unit
+            ORDER BY period;
+        """;
+
+            try (Connection conn = dbConnection.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setString(1, period.toLowerCase());
+                ps.setTimestamp(2, Timestamp.from(startDate));
+                ps.setTimestamp(3, Timestamp.from(endDate));
+
+                ResultSet rs = ps.executeQuery();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy HH:mm")
+                        .withZone(ZoneId.systemDefault());
+
+                System.out.printf("%-15s %-15s %-10s %-5s%n", "Ingredient", "Period", "Quantity", "Unit");
+
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    Timestamp periodTs = rs.getTimestamp("period");
+                    Double quantity = rs.getDouble("stock_quantity");
+                    String unit = rs.getString("unit");
+
+                    String periodStr = formatter.format(periodTs.toInstant());
+
+                    System.out.printf("%-15s %-15s %-10.2f %-5s%n", name, periodStr, quantity, unit);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 

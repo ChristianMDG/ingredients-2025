@@ -11,17 +11,23 @@ public class Main {
     public static void main(String[] args) {
 
         DataRetriever dataRetriever = new DataRetriever();
+//
+//        System.out.println("--------getStockValue -----------");
+//        Instant t = Instant.parse("2024-01-06T12:00:00Z");
+//        System.out.println(dataRetriever.getStockValueAt(t,2));
+//
+//        System.out.println("------------GetDishCost-----------");
+//        Integer id = 1;
+//        System.out.println("Le Prix des ingredients composer le plat "+ dataRetriever.findDishById(id).getName() + " est de : " +dataRetriever.getDishCost(id) +"Ar");
+//
+//        System.out.println("-----------GetDishCost-----------");
+//        System.out.println("Marge brute d'un plat est : " + dataRetriever.getGrossMargint(id)+"Ar");
+//
 
-        System.out.println("--------getStockValue -----------");
-        Instant t = Instant.parse("2024-01-06T12:00:00Z");
-        System.out.println(dataRetriever.getStockValueAt(t,2));
+        Instant start = Instant.parse("2024-01-01T00:00:00Z");
+        Instant end   = Instant.parse("2024-01-30T23:59:59Z");
 
-        System.out.println("------------GetDishCost-----------");
-        Integer id = 1;
-        System.out.println("Le Prix des ingredients composer le plat "+ dataRetriever.findDishById(id).getName() + " est de : " +dataRetriever.getDishCost(id) +"Ar");
-
-        System.out.println("-----------GetDishCost-----------");
-        System.out.println("Marge brute d'un plat est : " + dataRetriever.getGrossMargint(id)+"Ar");
+        dataRetriever.displayStockResults("day", start, end);
 
 
 //        System.out.println("------------- Test A -------------");
