@@ -1,9 +1,7 @@
-import java.security.PublicKey;
 import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DataRetriever {
 
@@ -1001,17 +999,51 @@ public class DataRetriever {
     public Double getDishCost(Integer dishId){
 
        DBConnection dbConnection = new DBConnection();
+        Double dishIngredientCost = 0.0;
        String getDishCostSql = """
-               select dish.is, dish.name,sum(ingredient.price * dishingredient.quantity_required) as Cost from dish
-                       join dishingredient on dish.id = dishingredient.id_dish
-                       join ingredient on dishingredient.id_ingredient = ingredient.id
-                       where id_dish = 1;
-       """
+              select dish.name, sum(ingredient.price * dishingredient.quantity_required) as DishIngredientCost from dish
+                                                 join dishingredient on dish.id = dishingredient.id_dish
+                                                 join ingredient on dishingredient.id_ingredient = ingredient.id
+                                                 where id_dish = ?
+                                                 group by dish.name;
+       """;
+
+       try(Connection connection = dbConnection.getConnection();
+       PreparedStatement preparedStatement = connection.prepareStatement(getDishCostSql)){
+           preparedStatement.setInt(1, dishId);
+           ResultSet resultSet = preparedStatement.executeQuery();
+           if (resultSet.next()) {
+            dishIngredientCost = resultSet.getDouble("DishIngredientCost");
+           }
+           return dishIngredientCost ;
+       }catch(SQLException e){
+           throw new RuntimeException(e);
+       }
     }
 
 
     public Double getGrossMargint(Integer dishId){
-       throw new UnsupportedOperationException("Not supported yet.");
+        DBConnection dbConnection = new DBConnection();
+        Double dishCrossMargin = 0.0;
+        String getDishCrossMarginSql = """
+             SELECT dish.price - SUM(ingredient.price * dishingredient.quantity_required) AS Margin
+             FROM dish
+                      JOIN dishingredient ON dish.id = dishingredient.id_dish
+                      JOIN ingredient ON dishingredient.id_ingredient = ingredient.id
+             WHERE dish.id = ?
+             GROUP BY dish.price;
+       """;
+        try(Connection connection = dbConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(getDishCrossMarginSql)){
+            preparedStatement.setInt(1, dishId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                dishCrossMargin = resultSet.getDouble("Margin");
+            }
+            return dishCrossMargin ;
+        }catch(SQLException e){
+        throw new RuntimeException(e);
+        }
     }
 }
 

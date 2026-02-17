@@ -12,9 +12,17 @@ public class Main {
 
         DataRetriever dataRetriever = new DataRetriever();
 
+        System.out.println("--------getStockValue -----------");
         Instant t = Instant.parse("2024-01-06T12:00:00Z");
-
         System.out.println(dataRetriever.getStockValueAt(t,2));
+
+        System.out.println("------------GetDishCost-----------");
+        Integer id = 1;
+        System.out.println("Le Prix des ingredients composer le plat "+ dataRetriever.findDishById(id).getName() + " est de : " +dataRetriever.getDishCost(id) +"Ar");
+
+        System.out.println("-----------GetDishCost-----------");
+        System.out.println("Marge brute d'un plat est : " + dataRetriever.getGrossMargint(id)+"Ar");
+
 
 //        System.out.println("------------- Test A -------------");
 //        Dish dishA = dataRetriever.findDishById(1);
@@ -124,12 +132,12 @@ public class Main {
 //        savedDish.prettyPrint();
 //        System.out.println("---------------------------------");
 //
-        System.out.println("------Couts----- :");
-        Dish dishE = dataRetriever.findDishById(1);
-        System.out.println("Le prix du " + dishE.getName() + " est ; " + dishE.getPrice() + "Ar");
-        System.out.println("Total ingredient par plat (depenses) : " + dishE.getDishCost() + "Ar");
-        System.out.println("Benefice : " + dishE.getGrossMargin() + "Ar");
-//
+//        System.out.println("------Couts----- :");
+//        Dish dishE = dataRetriever.findDishById(1);
+//        System.out.println("Le prix du " + dishE.getName() + " est ; " + dishE.getPrice() + "Ar");
+//        System.out.println("Total ingredient par plat (depenses) : " + dishE.getDishCost() + "Ar");
+//        System.out.println("Benefice : " + dishE.getGrossMargin() + "Ar");
+////
 //        System.out.println("---------------------------------");
 //
 //        System.out.println("------------- SaveIngredient ------------");
@@ -157,14 +165,14 @@ public class Main {
 //        System.out.println("Mouvement sauvegardé avec ID : " + savedIngredient.getStockMovementList().get(0).getId());
 //
 
-        System.out.println("------- GetStockValues -------");
-        Ingredient ingredientInStock = dataRetriever.findIngredientById(2);
-
-        Instant t1 = Instant.parse("2024-01-06T12:00:00Z");
-        StockValue stock = ingredientInStock.getStockValueAt(t1);
-
-        System.out.println(ingredientInStock.getName() + " en stock est : " + stock.getQuantity() + " " + stock.getUnit());
-
+//        System.out.println("------- GetStockValues -------");
+//        Ingredient ingredientInStock = dataRetriever.findIngredientById(2);
+//
+//        Instant t1 = Instant.parse("2024-01-06T12:00:00Z");
+//        StockValue stock = ingredientInStock.getStockValueAt(t1);
+//
+//        System.out.println(ingredientInStock.getName() + " en stock est : " + stock.getQuantity() + " " + stock.getUnit());
+//
 
 //        Dish dish1 = dataRetriever.findDishById(2);
 //        Dish dish2 = dataRetriever.findDishById(4);
